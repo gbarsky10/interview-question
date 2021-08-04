@@ -18,6 +18,11 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Handle Course Not Found Exception
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(CourseNotFoundException.class)
     protected ResponseEntity<Object> handleCourseNotFound(CourseNotFoundException ex) {
 
@@ -25,6 +30,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return buildResponseEntity(ErrorResponse);
     }
 
+    /**
+     * Handle Student Not Found Exception
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(StudentNotFoundException.class)
     protected ResponseEntity<Object> handleStudentNotFound(StudentNotFoundException ex) {
 
@@ -32,7 +42,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return buildResponseEntity(ErrorResponse);
     }
 
-
+    /**
+     * Handle Student Already Enrolled Exception
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(StudentAlreadyEnrolledException.class)
     protected ResponseEntity<Object> handleStudentAlreadyEnrolledFound(StudentAlreadyEnrolledException ex) {
 
@@ -40,6 +54,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return buildResponseEntity(ErrorResponse);
     }
 
+    /**
+     * Handle Course is Full Exception
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(CourseIsFullException.class)
     protected ResponseEntity<Object> handleCourseIsFull(CourseIsFullException ex) {
 
@@ -47,6 +66,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return buildResponseEntity(ErrorResponse);
     }
 
+    /**
+     * Handle invalid registration data exception
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(InvalidRegistrationDateException.class)
     protected ResponseEntity<Object> handleInvalidRegistrationDate(InvalidRegistrationDateException ex) {
 
@@ -54,6 +78,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return buildResponseEntity(ErrorResponse);
     }
 
+    /**
+     * Handle invalid cancellation date exception
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(InvalidCancellationDateException.class)
     protected ResponseEntity<Object> handleInvalidCancellationDate(InvalidCancellationDateException ex) {
 
@@ -61,6 +90,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return buildResponseEntity(ErrorResponse);
     }
 
+    /**
+     * Build Response Entity with Error Response content
+     * @param ErrorResponse
+     * @return
+     */
     private ResponseEntity<Object> buildResponseEntity(ErrorResponse ErrorResponse) {
         return new ResponseEntity<>(ErrorResponse, ErrorResponse.getStatus());
     }

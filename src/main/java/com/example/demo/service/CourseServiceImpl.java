@@ -163,8 +163,6 @@ public class CourseServiceImpl implements CourseService{
         }
         courseDto.setParticipants(students);
         return courseDto;
-
-        //return findCourseById(id);
     }
 
     /**
@@ -250,11 +248,6 @@ public class CourseServiceImpl implements CourseService{
                                 .name(se.getName())
                                 .registrationDate(registrationDate)
                                 .build();
-        /*
-                new StudentDTO();
-        studentDTO.setName(se.getName());
-        studentDTO.setRegistrationDate(registrationDate);
-         */
         return studentDTO;
     }
 

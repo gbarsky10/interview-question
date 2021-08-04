@@ -18,5 +18,4 @@ public interface CourseService {
 
     CourseResponseDTO cancelStudentEnrollment(Long id, StudentCancellationRequestDTO studentEnrollment);
 
-
 }

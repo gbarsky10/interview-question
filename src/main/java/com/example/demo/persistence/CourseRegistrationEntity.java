@@ -23,12 +23,10 @@ public class CourseRegistrationEntity implements Serializable {
     CourseRegistrationKey id;
 
     @ManyToOne
-    //@MapsId("studentId")
     @JoinColumn(name = "student_id", insertable = false, updatable = false)
     StudentEntity student;
 
     @ManyToOne
-    //@MapsId("courseId")
     @JoinColumn(name = "course_id", insertable = false, updatable = false)
     CourseEntity course;
 

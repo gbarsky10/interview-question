@@ -4,8 +4,6 @@ import com.example.demo.model.CourseRequestDTO;
 import com.example.demo.model.CourseResponseDTO;
 import com.example.demo.model.StudentCancellationRequestDTO;
 import com.example.demo.model.StudentEnrollmentRequestDTO;
-import com.example.demo.persistence.CourseEntity;
-import com.example.demo.persistence.StudentEntity;
 import org.springframework.http.ResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

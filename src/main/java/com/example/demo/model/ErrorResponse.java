@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
 import lombok.Generated;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Getter
 @Generated
-//@Builder
 public class ErrorResponse {
 
     private HttpStatus status;
