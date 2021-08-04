@@ -1,13 +1,10 @@
 server:
-  port: 5000
+  port: 8989
 
-backbase:
-  my_secret: ${MY_SECRET:my yaml secret}
 
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
-#    url: jdbc:h2:file:./demo
     driverClassName: org.h2.Driver
     username: sa
     password: password
@@ -19,5 +16,5 @@ spring:
       ddl-auto: update
   h2:
     console:
-      enabled: false
+      enabled: true
 
