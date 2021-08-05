@@ -1,4 +1,4 @@
-package com.example.demo.services.rest;
+package com.example.demo.controller;
 
 import com.example.demo.model.CourseRequestDTO;
 import com.example.demo.model.CourseResponseDTO;
@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ import static com.example.demo.TestHelper.buildCourseResponseDTO;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RestServiceTests {
+public class CourseControllerTests {
 
     @Autowired
     CourseRepository courseRepository;
@@ -39,8 +40,9 @@ public class RestServiceTests {
 
     String controllerPath = "/courses";
     CourseResponseDTO existingCourseResponseDTO;
-    ResponseEntity successResponse;
     ErrorResponse errorResponse;
+    ResponseEntity<CourseResponseDTO> successResponse;
+    int statusCode;
 
     @BeforeEach
     void beforeEach() {
@@ -48,9 +50,11 @@ public class RestServiceTests {
         RestAssured.defaultParser = Parser.JSON;
 
         existingCourseResponseDTO = null;
-        successResponse = null;
         errorResponse = null;
+        successResponse = null;
+
         courseRepository.deleteAll();
+
     }
 
     @Nested
@@ -121,7 +125,7 @@ public class RestServiceTests {
         private void whenGetCoursesByTitle() {
             foundCoursesDTO = (List<CourseResponseDTO>) given()
                     .when().get(controllerPath + "/title=Math");
-                    //.as(List<CourseResponseDTO>.class);
+
         }
 
         private void thenAssertCourseFound() {
@@ -285,15 +289,19 @@ public class RestServiceTests {
 
             whenAddCourseSuccessResult("Math", LocalDate.now().plusDays(5), LocalDate.now().plusDays(10));
 
-            thenAssertApiSuccessStatus(HttpStatus.CREATED);
+            thenAssertApiSuccessStatus(HttpStatus.CREATED.value());
         }
 
         private void whenAddCourseSuccessResult(String title, LocalDate startDate, LocalDate endDate) {
-            successResponse = given()
+
+           // ResponseEntity<CourseResponseDTO> successResponse; //=  ResponseEntity<CourseResponseDTO>(null, new HttpHeaders(), HttpStatus.OK)
+            //CourseResponseDTO courseResponseDTO = buildCourseResponseDTO(1l,title,startDate,endDate,10,10,null);
+            //ResponseEntity<CourseResponseDTO> res = new ResponseEntity<CourseResponseDTO>(courseResponseDTO, new HttpHeaders(), HttpStatus.CREATED);
+            statusCode = given()
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .body(buildCourseRequestDTO(title,startDate, endDate,10))
-                    .when().post(controllerPath)
-                    .as(ResponseEntity.class);
+                    .when().post(controllerPath).getStatusCode();
+                    //.as(ResponseEntity.class);
         }
     }
 
@@ -316,9 +324,8 @@ public class RestServiceTests {
 
     }
 
-
-    private void thenAssertApiSuccessStatus(HttpStatus expectedHttpStatus) {
-        assertThat(successResponse.getStatusCode().compareTo(expectedHttpStatus) == 0);
+    private void thenAssertApiSuccessStatus(int expectedHttpStatusCode) {
+        assertThat(statusCode).isEqualTo(expectedHttpStatusCode);
     }
 
     private void thenAssertApiErrorThrown(HttpStatus expectedHttpStatus) {

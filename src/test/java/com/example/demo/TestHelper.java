@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.model.*;
 import com.example.demo.persistence.CourseEntity;
+import com.example.demo.persistence.StudentEntity;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -65,5 +66,14 @@ public class TestHelper {
         studentCancellationRequestDTO.setCancelDate(cancelDate);
         studentCancellationRequestDTO.setCourseId(1l);
         return studentCancellationRequestDTO;
+    }
+
+    public static StudentEntity buildStudent(String name) {
+
+        StudentEntity student  = new StudentEntity();
+        student.setName(name);
+
+        return student;
+
     }
 }

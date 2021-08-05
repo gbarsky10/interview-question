@@ -63,7 +63,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"courseId\": 1,\r\n  \"registrationDate\": \"2021-08-03\",\r\n  \"name\": \"Matt\"\r\n}",
+					"raw": "{\r\n  \"courseId\": 1,\r\n  \"registrationDate\": \"2021-08-04\",\r\n  \"name\": \"Daniel\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -135,31 +135,6 @@
 						{
 							"key": "title",
 							"value": "Math"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Greeting",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8989/greeting?name=David",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8989",
-					"path": [
-						"greeting"
-					],
-					"query": [
-						{
-							"key": "name",
-							"value": "David"
 						}
 					]
 				}

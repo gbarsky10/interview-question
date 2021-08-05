@@ -91,6 +91,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     /**
+     * Handle Course Id Mismatch exception
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(CourseIdMismatch.class)
+    protected ResponseEntity<Object> handleCourseIdMismatchException(CourseIdMismatch ex) {
+
+        ErrorResponse ErrorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, ex.getMessage(), null);
+        return buildResponseEntity(ErrorResponse);
+    }
+
+    /**
      * Build Response Entity with Error Response content
      * @param ErrorResponse
      * @return
@@ -98,5 +110,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     private ResponseEntity<Object> buildResponseEntity(ErrorResponse ErrorResponse) {
         return new ResponseEntity<>(ErrorResponse, ErrorResponse.getStatus());
     }
+
 
 }

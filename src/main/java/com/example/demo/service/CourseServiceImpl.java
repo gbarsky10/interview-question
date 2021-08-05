@@ -114,11 +114,17 @@ public class CourseServiceImpl implements CourseService{
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public CourseResponseDTO enrollStudentToCourse(Long id, StudentEnrollmentRequestDTO studentEnrollment){
 
+        //validate that course id inside the body matches course id in the URI path:
+        if (studentEnrollment.getCourseId() != id) {
+            throw new CourseIdMismatch(String.format("Course id within body does not match course id in the path, body Id=%d, path Id=%d",studentEnrollment.getCourseId(), id));
+        }
+
         // validate that a given course exists
         Optional<CourseEntity> course = courseRepository.findById(id);
         if (course.isEmpty()) {
             throw new CourseNotFoundException(String.format("Course was not found for id=%s", id));
         }
+
 
         CourseEntity courseEntity = course.get();
         if (courseEntity.getRemaining() == 0) {
@@ -150,7 +156,6 @@ public class CourseServiceImpl implements CourseService{
 
         CourseRegistrationEntity registration = new CourseRegistrationEntity(courseEntity,studentEntity,studentEnrollment.getRegistrationDate());;
         courseEntity.getRegistrations().add(registration);
-        //studentEntity.getRegistrations().add(registration);
         courseRegistrationRepository.save(registration);
 
         courseEntity.setRemaining(courseEntity.getRemaining()-1);
@@ -175,6 +180,11 @@ public class CourseServiceImpl implements CourseService{
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public CourseResponseDTO cancelStudentEnrollment(Long id, StudentCancellationRequestDTO studentCancellation){
+
+        //validate that course id inside the body matches course id in the URI path:
+        if (studentCancellation.getCourseId() != id) {
+            throw new CourseIdMismatch(String.format("Course id within body does not match course id in the path, body Id=%d, path Id=%d",studentCancellation.getCourseId(), id));
+        }
 
         // validate that a given course exists
         Optional<CourseEntity> course = courseRepository.findById(id);

@@ -1,10 +1,12 @@
 package com.example.demo.persistence;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
+@DataJpaTest
 public class CourseRepositoryTest {
 
     @Autowired
@@ -33,7 +35,10 @@ public class CourseRepositoryTest {
     LocalDate now;
 
     @BeforeEach
-    void beforeEach() {
+    void initUseCase() {
+        // CourseEntity courseEntity = buildCourse("Comp Science", now.plusDays(5), now.plusDays(10), 5,5);
+        //courseEntity.setId(1l);
+        // existingCourse = courseRepository.save(courseEntity);
         courseRepository.deleteAll();
         studentRepository.deleteAll();
         now = LocalDate.now();
@@ -46,20 +51,20 @@ public class CourseRepositoryTest {
 
     @Test
     void find_by_id__given_existing_course__then_course_found() {
-        givenExistingCourse("Comp Science", now.plusDays(5), now.plusDays(10), 5);
 
-        whenFindById();
+        CourseEntity courseEntity = buildCourse("Comp Science", now.plusDays(5), now.plusDays(10), 5, 5);
+        existingCourse = courseRepository.save(courseEntity);
+        Optional<CourseEntity> optionalCourse = courseRepository.findById(1l);
+        assertThat(optionalCourse.get().getTitle()).isEqualTo("Comp Science");
 
-        thenAssertCourseFoundForId();
     }
 
     @Test
     void find_by_title__given_existing_course__then_course_found() {
-        givenExistingCourse("Comp Science", now.plusDays(5), now.plusDays(10), 5);
-
-        whenFindByTitle("Science");
-
-        thenAssertCourseFoundByTitle();
+        CourseEntity courseEntity = buildCourse("Comp Science", now.plusDays(5), now.plusDays(10), 5, 5);
+        existingCourse = courseRepository.save(courseEntity);
+        List<CourseEntity> courses = courseRepository.findByTitle("Science");
+        assertThat(courses.size()).isEqualTo(1);
     }
 
 
@@ -72,24 +77,6 @@ public class CourseRepositoryTest {
         thenAssertStudentFoundByName();
     }
 
-
-    private void givenExistingCourse(String title, LocalDate startDate, LocalDate endDate, int capacity) {
-        CourseEntity courseEntity = buildCourse(title, startDate, endDate, capacity, capacity);
-        existingCourse = courseRepository.save(courseEntity);
-    }
-
-    private void whenFindById() {
-        courseOptionalForId = courseRepository.findById(1l);
-    }
-
-    private void whenFindByTitle(String title) {
-        coursesByTitle = courseRepository.findByTitle(title);
-    }
-
-    private void thenAssertCourseFoundForId() {
-        assertAll("foundCourse",
-                () -> assertThat(courseOptionalForId).hasValue(existingCourse));
-    }
 
     private void givenExistingStudent(String name) {
         StudentEntity studentEntity = new StudentEntity();
@@ -104,10 +91,5 @@ public class CourseRepositoryTest {
     private void thenAssertStudentFoundByName() {
         assertAll("foundStudent",
                 () -> assertThat(studentOptionalByName).hasValue(existingStudent));
-    }
-    private void thenAssertCourseFoundByTitle() {
-        assertAll(
-            () -> assertThat(coursesByTitle).size().isEqualTo(1),
-            () -> assertThat(existingCourse).isIn(coursesByTitle));
     }
 }
